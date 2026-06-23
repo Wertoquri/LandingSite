@@ -31,7 +31,7 @@ Read [CONTENT_GUIDE.md](./CONTENT_GUIDE.md) before replacing placeholders.
 
 ## Environment variables
 
-At least one delivery channel is required. Telegram uses `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`. Email uses `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_FROM_EMAIL`, and `CONTACT_TO_EMAIL`. Do not expose these with a `VITE_` prefix.
+At least one delivery channel is required. Telegram uses `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`. Email uses `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_FROM_EMAIL`, and `CONTACT_TO_EMAIL`. The API also accepts TaskFlow-style fallback names: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`, and `EMAIL_TO`. Do not expose these with a `VITE_` prefix.
 
 ## Deployment
 
