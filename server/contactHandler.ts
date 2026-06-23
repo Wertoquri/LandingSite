@@ -11,6 +11,15 @@ export async function handleContact(input: unknown) {
   const telegramToken = env('TELEGRAM_BOT_TOKEN');
   const telegramChatId = env('TELEGRAM_CHAT_ID');
   if (telegramToken && telegramChatId) deliveries.push(fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: telegramChatId, text: message }) }).then(async (response) => { if (!response.ok) throw new Error(`Telegram delivery failed: ${response.status}`); }));
+  const emailApiUrl = env('EMAIL_API_URL');
+  const emailApiSecret = env('EMAIL_API_SECRET');
+  const emailApiTo = env('CONTACT_TO_EMAIL') || env('EMAIL_TO') || env('SMTP_USER') || env('EMAIL_USER');
+  if (emailApiUrl && emailApiSecret && emailApiTo) {
+    deliveries.push(fetch(emailApiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ secret: emailApiSecret, to: emailApiTo, subject: `Portfolio inquiry — ${parsed.data.projectType}`, text: message, replyTo: parsed.data.email }) }).then(async (response) => {
+      const result = await response.json().catch(() => null);
+      if (!response.ok || result?.ok !== true) throw new Error(`Email relay failed: ${response.status}`);
+    }));
+  }
   const smtpHost = env('SMTP_HOST') || env('EMAIL_HOST');
   const smtpPort = env('SMTP_PORT') || env('EMAIL_PORT') || '587';
   const smtpSecure = env('SMTP_SECURE') || env('EMAIL_SECURE');
